@@ -6,8 +6,10 @@ import java.util.ArrayList;
        and a list of tree's trunks sequences. */
 class ProfitAndSequence
 {
+    /* Profit value for a given numerical sequence, representing the trees' chunks value */
     int profit;
 
+    /* List with all trees' chunks sizes */
     ListOrderedSet trunkSequence;
 
     ProfitAndSequence( int profit, ArrayList<Integer> comb)

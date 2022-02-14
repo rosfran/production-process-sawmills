@@ -3,9 +3,9 @@ package com.sawmills.app;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
-/*
-        Generates all permutations for a given List of Integers.
-    */
+/**
+ *  Generates all permutations for a given List of Integers.
+ */
  class PermutationListGenerator {
 
     static private TreeSet<ListOrderedSet> permList = new TreeSet<>();
@@ -22,6 +22,18 @@ import java.util.TreeSet;
         return getPerms();
     }
 
+    /**
+     * Generates a List with all permutations of the Integers contained in the nums parameter
+     *
+     * This works very straightforward - on each iteration, 2 elements are swapped, and then,
+     * redursively, elements contained in the smaller (and final) portion of the array is used for permutation.
+     *
+     * Then the routine swaps back the 2 elements above.
+     *
+     * @param start     Start index from the nums parameter, from which is being generated the permutations
+     * @param end       End index from the nums parameter, from which is being generated the permutations
+     * @param nums      List of Integers that will
+     */
     static private void permutation(int start, int end, ListOrderedSet nums)
     {
         if (start == end) {
@@ -34,6 +46,14 @@ import java.util.TreeSet;
         }
     }
 
+    /**
+     * Swaps 2 elements from the ArrayList
+     *
+     * @param arr  Array from which the elements will be swapped
+     * @param a    Index to the first element that will be swapped
+     * @param b    Index to the first element that will be swapped
+     * @return Returns the List with the elements swapped
+     */
     static private ListOrderedSet swap(ArrayList<Integer> arr, int a, int b) {
         if (a == b) {
             return new ListOrderedSet(arr);

@@ -36,76 +36,33 @@ public class TreeChunkProcessing
      *  @returns An object of ProfitAndSequence, which stores the profit value
      *      and a list of tree's trunks sequences.
      */
-    public static ProfitAndSequence calculateProfit(List<Integer> list, HashMap<Integer, TreeSet<ListOrderedSet>> profitToTrunkSequences) {
+    public static ProfitAndSequence calculateProfit(List<Integer> allTreeChunks, HashMap<Integer, TreeSet<ListOrderedSet>> profitToTrunkSequences) {
 
         int profit = 0;
-        int actualChunk = 0;
+        int actualChunkSize = 0;
 
-        for (int i : list) {
+        for (int i : allTreeChunks) {
 
-            if (actualChunk + i > 3) {
-                actualChunk = actualChunk + i - 3;
-                profit += calculateProfitFromBlock(i - actualChunk);
-                profit += calculateProfitFromBlock(actualChunk);
+            if (actualChunkSize + i > 3) {
+                actualChunkSize = actualChunkSize + i - 3;
+                profit += calculateProfitFromBlock(i - actualChunkSize);
+                profit += calculateProfitFromBlock(actualChunkSize);
             } else {
                 profit += calculateProfitFromBlock(i);
-                actualChunk += i;
+                actualChunkSize += i;
 
             }
-            if (actualChunk > 3)
+            if (actualChunkSize > 3)
             {
-                actualChunk = 0;
+                actualChunkSize = 0;
             }
         }
 
         profitToTrunkSequences.putIfAbsent(profit, new TreeSet<ListOrderedSet>());
 
-        ArrayList<Integer> fullList = new ArrayList<Integer>(list);
+        ArrayList<Integer> fullList = new ArrayList<Integer>(allTreeChunks);
 
         return new ProfitAndSequence(profit, fullList);
-    }
-
-
-    /* Old function that calculates the profit  */
-    public static void calculateProfit2(ArrayList<Integer> combs, HashMap<Integer, TreeSet<ListOrderedSet>> profitToTrunkSequences)
-    {
-        int profit = 0;
-
-        if ( combs == null || combs.size() == 0 ) return;
-
-        int actualChunk = combs.get(0);
-
-        for (int i = 1; i < combs.size(); i++ )  {
-
-            if ( ( combs.get(i) + actualChunk ) >= 4 )
-            {
-                int sum = combs.get(i) + actualChunk;
-                profit += calculateProfitFromBlock(3);
-
-                profit += calculateProfitFromBlock(sum - 3);
-
-                actualChunk += (sum - 3);
-            } else {
-                int sum = combs.get(i) + actualChunk;
-                profit += calculateProfitFromBlock(sum );
-
-                actualChunk += sum;
-
-
-            }
-
-            if  ( actualChunk > 3 )
-            {
-                actualChunk = 0;
-            }
-
-        }
-
-        profitToTrunkSequences.putIfAbsent(profit, new TreeSet<ListOrderedSet>());
-
-        ListOrderedSet fullList = new ListOrderedSet(combs);
-        profitToTrunkSequences.get(profit).add(fullList);
-
     }
 
 
