@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/production-process-sawmills.iml" filepath="$PROJECT_DIR$/production-process-sawmills.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lego-land-process.iml" filepath="$PROJECT_DIR$/lego-land-process.iml" />
     </modules>
   </component>
 </project>
