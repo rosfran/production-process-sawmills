@@ -1,30 +1,58 @@
 package com.sawmills.app;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class WoodCutter
 {
-    public static HashMap<Integer, TreeSet<ListOrderedSet>> profitToTrunkSequences;
-    public static int treeChunksQuantity;
+    static HashMap<Integer, TreeSet<ListOrderedSet>> profitToTrunkSequences;
 
-    public static void main(String[] args)
+    static int treeChunksQuantity;
+
+    boolean printDebugMessages = true;
+
+    public WoodCutter()
     {
-//        String str = "1\n"+
-//                "3 2 3 1\n" +
-//                "3\n" +
-//                "3 1 2 1\n" +
-//                "2 1 2\n"+
-//                "2 1 4\n"+
-//                "0\n";
-//        InputStream stream = new ByteArrayInputStream(str.getBytes());
-//        Scanner sc = new Scanner(stream);
+    }
 
-        Scanner sc = new Scanner(System.in);
+    public WoodCutter( boolean printDebugMessages )
+    {
+        this.printDebugMessages = printDebugMessages;
+    }
+
+    /**
+     * Generates a list of results for a given set of wood cutter cases.
+     *
+     * @param input An String representing a set of cases.
+     * @return A list of results.
+     */
+    public ArrayList<WoodCutterResult> processSawmills(String input) throws Exception
+    {
+
+        InputStream stream = new ByteArrayInputStream(input.getBytes());
+
+        return processSawmills(stream);
+
+    }
+
+    /**
+     * Generates a list of results for a given set of wood cutter cases.
+     *
+     * @param stream An IO Stream representing a set of cases.
+     * @return A list of results.
+     */
+    public ArrayList<WoodCutterResult> processSawmills(InputStream stream) throws Exception
+    {
+
+        ArrayList<WoodCutterResult> allCases = new ArrayList<WoodCutterResult>();
+
+        Scanner sc = new Scanner(stream);
 
         /* this variable is the quantity of sawmills for this specific case - it is called variable Z,
-        * in the problem description
-        */
+         * in the problem description
+         */
         int sawmillsCount = sc.nextInt();
 
         int profitValue = 0;
@@ -110,22 +138,43 @@ public class WoodCutter
 
             sawmillsCount--;
 
-            /* Found the sawmillsCount token equals to zero. By the way, this indicates that we reached the end of this test case. */
+            /* Found the sawmillsCount counter equals to zero. By the way, this indicates that we reached the end of this test case. */
             if (sawmillsCount == 0)
             {
-                System.out.println("Case Number: " + caseNumber);
-                System.out.println("Maximum Profit value: " + profitValue);
-                System.out.print("Results: ");
+                WoodCutterResult woodCutterResult = new WoodCutterResult();
+
+                /* Only print out messages to stdout when the field this.printDebugMessages is true */
+                if ( this.printDebugMessages )
+                {
+                    System.out.println("Case Number: " + caseNumber);
+                    System.out.println("Maximum Profit value: " + profitValue);
+                    System.out.print("Results: ");
+                }
 
                 /* An String message with the String representation got from the List of tree's trunks.  */
                 String trunks = "";
+
                 /* Iterates over all the results, and print the arrays with the tree trunk's sequences. */
                 for (final Map.Entry<Integer, TreeSet<ListOrderedSet>> entry : result.entrySet())
                 {
                     trunks+= entry.getValue().parallelStream().map(o -> ((ListOrderedSet)o).toString()).collect(Collectors.joining(","));
                 }
 
-                System.out.println(trunks);
+                if ( this.printDebugMessages )
+                {
+                    System.out.println(trunks);
+                }
+
+                /*
+                 *  Creates an Object with the data that representes this result - a case number,
+                 *  a profit value and a sequence of tree trunks
+                 */
+                woodCutterResult.setCaseNumber(caseNumber);
+                woodCutterResult.setMaximumProfitValue(profitValue);
+                woodCutterResult.setOrderedTrunkSequence( result );
+
+                /* Stores this specific result into an array list. This ArrayList will be returned by this method. */
+                allCases.add(woodCutterResult);
 
                 /* Here we need to clean up the result HashMap - maybe there will be a next case to evaluate. */
                 result = new HashMap<Integer, TreeSet<ListOrderedSet>>();
@@ -143,5 +192,24 @@ public class WoodCutter
         {
             sc.close();
         }
+
+        return allCases;
+
+    } // method - static void main
+
+    public static void main(String[] args)
+    {
+
+        WoodCutter woodCutter = new WoodCutter();
+
+        try
+        {
+            woodCutter.processSawmills(System.in);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
     } // method - static void main
 }

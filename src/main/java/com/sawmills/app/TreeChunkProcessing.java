@@ -43,6 +43,9 @@ public class TreeChunkProcessing
 
         for (int i : allTreeChunks) {
 
+            /* If it sums up to a size above 3, than break down the tree chunk
+            *  The size of 3 is speficied as the sawmill capacity for processing trunks.
+            */
             if (actualChunkSize + i > 3) {
                 actualChunkSize = actualChunkSize + i - 3;
                 profit += calculateProfitFromBlock(i - actualChunkSize);
@@ -52,6 +55,11 @@ public class TreeChunkProcessing
                 actualChunkSize += i;
 
             }
+            /* In any case, if the actual chunk size being processed is above 3,
+             * the actualChunkSize will be empty.
+             * This is necessary because here the machine will probably start processing
+             * another chunk.
+             */
             if (actualChunkSize > 3)
             {
                 actualChunkSize = 0;
